@@ -1,4 +1,4 @@
-public class QuickUnion {
+public class QuickUnion implements Operation{
     private int[] id;
 
     public QuickUnion(int arrayLength){
@@ -11,11 +11,11 @@ public class QuickUnion {
         return root(a) == root(b);
     }
 
-    private int root(int x){
-        while(id[x] != x){
-            x = id[x];
+    private int root(int i){
+        while(id[i] != i){
+            i = id[i];
         }
-        return x;
+        return i;
     }
 
     public void union(int a, int b){

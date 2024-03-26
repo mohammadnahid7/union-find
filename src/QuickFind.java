@@ -1,4 +1,4 @@
-public class QuickFind {
+public class QuickFind implements Operation {
     private int[] id;
 
     public QuickFind(int arrayLength){
@@ -7,10 +7,13 @@ public class QuickFind {
             id[i] = i;
         }
     }
+    @Override
     public boolean isConnected(int a, int b){
         return id[a] == id[b];
     }
 
+
+    @Override
     public void union(int a, int b){
         int aId = id[a];
         int bId = id[b];
@@ -18,7 +21,5 @@ public class QuickFind {
             if(id[i] == aId) id[i] = bId;
         }
     }
-    public int[] getUnionArray(){
-        return this.id;
-    }
+    public int[] getUnionArray(){ return this.id; }
 }

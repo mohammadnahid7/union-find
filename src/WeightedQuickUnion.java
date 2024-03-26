@@ -1,4 +1,4 @@
-public class WeightedQuickUnion {
+public class WeightedQuickUnion implements Operation{
     private int[] id;
     private int[] sz;
 
@@ -14,16 +14,17 @@ public class WeightedQuickUnion {
         return root(a) == root(b);
     }
 
-    private int root(int x){
-        while(id[x] != x){
-            x = id[x];
+    private int root(int i){
+        while(id[i] != i){
+            i = id[i];
         }
-        return x;
+        return i;
     }
 
     public void union(int a, int b){
         int i = root(a);
         int j = root(b);
+        if(i == j) return;
         if (sz[j] > sz[i]){
             id[i] = j;
             sz[j] += sz[i];

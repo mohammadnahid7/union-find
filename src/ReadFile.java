@@ -10,7 +10,6 @@ public class ReadFile {
         try {
             /* This Files.readString() gets all content from text file at once and convert them
              an array of union commands instead of line by line reading and do union operation */
-
             this.allCommandsArr = Files.readString(file.toPath()).split("\\n", -1);
         } catch (IOException e) {
             throw new RuntimeException(e);
