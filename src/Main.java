@@ -8,6 +8,8 @@ public class Main {
 
     public static void main(String[] args){
 
+        /* This ReadFile class takes the file contains commands, read everything and return an array version of those
+        * commands to loop through easily. */
         String[] tinyUFCommands = new ReadFile("tinyUF.txt").getAllCommands();
         String[] mediumUFCommands = new ReadFile("mediumUF.txt").getAllCommands();
         String[] largeUFCommands = new ReadFile("largeUF.txt").getAllCommands();
@@ -15,7 +17,6 @@ public class Main {
         operation(tinyUFCommands, _TINYUF);
         operation(mediumUFCommands, _MEDIUMUF);
         operation(largeUFCommands, _LARGEUF);
-
 
     }
 
