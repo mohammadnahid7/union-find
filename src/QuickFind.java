@@ -1,4 +1,4 @@
-public class QuickFind {
+public class QuickFind{
     private int[] id;
 
     public QuickFind(int arrayLength){
@@ -7,18 +7,15 @@ public class QuickFind {
             id[i] = i;
         }
     }
-    public boolean isConnected(int a, int b){
-        return id[a] == id[b];
+    public boolean isConnected(int p, int q){
+        return id[p] == id[q];
     }
 
-    public void union(int a, int b){
-        int aId = id[a];
-        int bId = id[b];
+    public void union(int p, int q){
+        int aId = id[p];
+        int bId = id[q];
         for(int i = 0; i < id.length; i++){
             if(id[i] == aId) id[i] = bId;
         }
-    }
-    public int[] getUnionArray(){
-        return this.id;
     }
 }

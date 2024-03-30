@@ -1,145 +1,123 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class Main {
-    static final String _TINYUF = "tinyUF";
-    static final String _MEDIUMUF = "mediumUF";
-    static final String _LARGEUF = "largeUF";
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args){
+        String[] tinyUfCommands;
+        String[] mediumUfCommands;
+        String[] largeUfCommands;
 
-        String[] tinyUFCommands = new ReadFile("tinyUF.txt").getAllCommands();
-        String[] mediumUFCommands = new ReadFile("mediumUF.txt").getAllCommands();
-        String[] largeUFCommands = new ReadFile("largeUF.txt").getAllCommands();
+        tinyUfCommands = fileRead("tinyUF.txt");
+        mediumUfCommands = fileRead("mediumUF.txt");
+        largeUfCommands = fileRead("largeUF.txt");
 
-//        All operation on tinyUF.txt file
-        quickFindOperation(tinyUFCommands, _TINYUF);
-        quickUnionOperation(tinyUFCommands, _TINYUF);
-        weightedQuickUnionOperation(tinyUFCommands, _TINYUF);
-        pathCompressedQuickUnionOperation(tinyUFCommands, _TINYUF);
-        pathCompressedWeightedOperation(tinyUFCommands, _TINYUF);
+
+//        All algorithms on tinyUF file
+        quickFind(tinyUfCommands, "tinyUF");
+        quickUnion(tinyUfCommands, "tinyUF");
+        weighted(tinyUfCommands, "tinyUF");
+        pathCompressed(tinyUfCommands, "tinyUF");
+        weightedPathCompressed(tinyUfCommands, "tinyUF");
+
+        System.out.println(" ");
+
+//        All algorithms on mediumUF file
+        quickFind(mediumUfCommands, "mediumUF");
+        quickUnion(mediumUfCommands, "mediumUF");
+        weighted(mediumUfCommands, "mediumUF");
+        pathCompressed(mediumUfCommands, "mediumUF");
+        weightedPathCompressed(mediumUfCommands, "mediumUF");
 
         System.out.println(" ");
 
-//        All operation on mediumUF.txt file
-        quickFindOperation(mediumUFCommands, _MEDIUMUF);
-        quickUnionOperation(mediumUFCommands, _MEDIUMUF);
-        weightedQuickUnionOperation(mediumUFCommands, _MEDIUMUF);
-        pathCompressedQuickUnionOperation(mediumUFCommands, _MEDIUMUF);
-        pathCompressedWeightedOperation(mediumUFCommands, _MEDIUMUF);
+//        All algorithms on largeUF file
+        weighted(largeUfCommands, "largeUF");
+        pathCompressed(largeUfCommands, "largeUF");
+        weightedPathCompressed(largeUfCommands, "largeUF");
 
-        System.out.println(" ");
-//        All operation on largeUF.txt file
-        weightedQuickUnionOperation(largeUFCommands, _LARGEUF);
-        pathCompressedQuickUnionOperation(largeUFCommands, _LARGEUF);
-        pathCompressedWeightedOperation(largeUFCommands, _LARGEUF);
 
+        
 
     }
 
 
-    // This function takes commands as input and do Quick Find operation only
-    private static void quickFindOperation(String[] allCommandsArr, String fileName){
-        int qfObjsLen = Integer.parseInt(allCommandsArr[0]);
+    private static String[] fileRead(String fileName) throws IOException {
+        byte[] bytes = Files.readAllBytes(Paths.get("src/" + fileName));
+        String content = new String(bytes);
+        return content.split("\n", -1);
+    }
+
+    private static void quickFind(String[] commands, String operationFileName) {
+        int qfObjsLen = Integer.parseInt(commands[0]);
         QuickFind quickFind = new QuickFind(qfObjsLen);
-
-        int allCommandsArrLen = allCommandsArr.length - 1;
-
-        // Operation Block - Timer start
-        long startTime = System.nanoTime();
-        for (int i = 1; i < allCommandsArrLen; i++){
-            String[] itemArr = allCommandsArr[i].trim().split("\\s", -1);
-            int a = Integer.parseInt(itemArr[0]);
-            int b = Integer.parseInt(itemArr[1]);
-            quickFind.union(a, b);
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i < commands.length - 1; i++){
+            String[] singleCommand = commands[i].trim().split("\\s", -1);
+            int p = Integer.parseInt(singleCommand[0]);
+            int q = Integer.parseInt(singleCommand[1]);
+            quickFind.union(p,q);
         }
-        long endTime = System.nanoTime();
-        // Operation Block - Timer end
-
-        resultPrint(fileName, "Quick Find" , endTime-startTime);
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Quick Find on " + operationFileName + ": " + duration + " Millisecond");
     }
-
-    // This function takes commands as input and do Quick Find operation only
-    private static void quickUnionOperation(String[] allCommandsArr, String fileName){
-        int quObjsLen = Integer.parseInt(allCommandsArr[0]);
-        QuickUnion quickUnion = new QuickUnion(quObjsLen);
-
-        int allCommandsArrLen = allCommandsArr.length - 1;
-
-        // Operation Block - Timer start
-        long startTime = System.nanoTime();
-        for (int i = 1; i < allCommandsArrLen; i++){
-            String[] itemArr = allCommandsArr[i].trim().split("\\s", -1);
-            int a = Integer.parseInt(itemArr[0]);
-            int b = Integer.parseInt(itemArr[1]);
-            quickUnion.union(a, b);
+    private static void quickUnion(String[] commands, String operationFileName) {
+        int qfObjsLen = Integer.parseInt(commands[0]);
+        QuickUnion quickFind = new QuickUnion(qfObjsLen);
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i < commands.length - 1; i++){
+            String[] singleCommand = commands[i].trim().split("\\s", -1);
+            int p = Integer.parseInt(singleCommand[0]);
+            int q = Integer.parseInt(singleCommand[1]);
+            quickFind.union(p,q);
         }
-        long endTime = System.nanoTime();
-        // Operation Block - Timer end
-
-        resultPrint(fileName, "Quick Union", endTime-startTime);
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Quick Union on " + operationFileName + ": " + duration + " Millisecond");
     }
-
-    private static void weightedQuickUnionOperation(String[] allCommandsArr, String fileName){
-        int wqfObjsLen = Integer.parseInt(allCommandsArr[0]);
-        WeightedQuickUnion weightedQuickUnion= new WeightedQuickUnion(wqfObjsLen);
-
-        int allCommandsArrLen = allCommandsArr.length - 1;
-
-        // Operation Block - Timer start
-        long startTime = System.nanoTime();
-        for (int i = 1; i < allCommandsArrLen; i++){
-            String[] itemArr = allCommandsArr[i].trim().split("\\s", -1);
-            int a = Integer.parseInt(itemArr[0]);
-            int b = Integer.parseInt(itemArr[1]);
-            weightedQuickUnion.union(a, b);
+    private static void weighted(String[] commands, String operationFileName) {
+        int qfObjsLen = Integer.parseInt(commands[0]);
+        WeightedQuickUnion quickFind = new WeightedQuickUnion(qfObjsLen);
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i < commands.length - 1; i++){
+            String[] singleCommand = commands[i].trim().split("\\s", -1);
+            int p = Integer.parseInt(singleCommand[0]);
+            int q = Integer.parseInt(singleCommand[1]);
+            quickFind.union(p,q);
         }
-        long endTime = System.nanoTime();
-        // Operation Block - Timer end
-
-        resultPrint(fileName, "Weighted Quick Union" , endTime-startTime );
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Weighted Quick Union on " + operationFileName + ": " + duration + " Millisecond");
     }
-
-
-    private static void pathCompressedQuickUnionOperation(String[] allCommandsArr, String fileName){
-        int pcquObjsLen = Integer.parseInt(allCommandsArr[0]);
-        PathCompressedQuickUnion pathCompressedQuickUnion = new PathCompressedQuickUnion(pcquObjsLen);
-
-        int allCommandsArrLen = allCommandsArr.length - 1;
-
-        // Operation Block - Timer start
-        long startTime = System.nanoTime();
-        for (int i = 1; i < allCommandsArrLen; i++){
-            String[] itemArr = allCommandsArr[i].trim().split("\\s", -1);
-            int a = Integer.parseInt(itemArr[0]);
-            int b = Integer.parseInt(itemArr[1]);
-            pathCompressedQuickUnion.union(a, b);
+    private static void pathCompressed(String[] commands, String operationFileName) {
+        int qfObjsLen = Integer.parseInt(commands[0]);
+        PathCompressedQuickUnion quickFind = new PathCompressedQuickUnion(qfObjsLen);
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i < commands.length - 1; i++){
+            String[] singleCommand = commands[i].trim().split("\\s", -1);
+            int p = Integer.parseInt(singleCommand[0]);
+            int q = Integer.parseInt(singleCommand[1]);
+            quickFind.union(p,q);
         }
-        long endTime = System.nanoTime();
-        // Operation Block - Timer end
-
-        resultPrint(fileName, "Path Compressed Quick Union" , endTime-startTime );
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Path Compressed Quick Union on " + operationFileName + ": " + duration + " Millisecond");
     }
-
-    private static void pathCompressedWeightedOperation(String[] allCommandsArr, String fileName){
-        int pcwObjsLen = Integer.parseInt(allCommandsArr[0]);
-        PathCompressionWeighted pathCompressionWeighted = new PathCompressionWeighted(pcwObjsLen);
-
-        int allCommandsArrLen = allCommandsArr.length - 1;
-
-        // Operation Block - Timer start
-        long startTime = System.nanoTime();
-        for (int i = 1; i < allCommandsArrLen; i++){
-            String[] itemArr = allCommandsArr[i].trim().split("\\s", -1);
-            int a = Integer.parseInt(itemArr[0]);
-            int b = Integer.parseInt(itemArr[1]);
-            pathCompressionWeighted.union(a, b);
+    private static void weightedPathCompressed(String[] commands, String operationFileName) {
+        int qfObjsLen = Integer.parseInt(commands[0]);
+        PathCompressionWeighted quickFind = new PathCompressionWeighted(qfObjsLen);
+        long startTime = System.currentTimeMillis();
+        for (int i = 1; i < commands.length - 1; i++){
+            String[] singleCommand = commands[i].trim().split("\\s", -1);
+            int p = Integer.parseInt(singleCommand[0]);
+            int q = Integer.parseInt(singleCommand[1]);
+            quickFind.union(p,q);
         }
-        long endTime = System.nanoTime();
-        // Operation Block - Timer end
-
-        resultPrint(fileName, "Path Compressed Weighted" , endTime-startTime );
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Weighted Path Compressed Quick Union on " + operationFileName + ": " + duration + " Millisecond");
     }
 
-    // Function to print result
-    private static void resultPrint(String fileName, String operationName, long elapsedTime){
-        System.out.println(fileName + "\t=>\t" + operationName + "\t=>\t" + (elapsedTime / 1_000_000) + " milliseconds");
-    }
 }

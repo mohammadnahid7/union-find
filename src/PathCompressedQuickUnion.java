@@ -1,4 +1,4 @@
-public class PathCompressedQuickUnion {
+public class PathCompressedQuickUnion{
     private int[] id;
 
     public PathCompressedQuickUnion(int arrayLength){
@@ -7,24 +7,21 @@ public class PathCompressedQuickUnion {
             id[i] = i;
         }
     }
-    public boolean isConnected(int a, int b){
-        return root(a) == root(b);
+    public boolean isConnected(int p, int q){
+        return root(p) == root(q);
     }
 
-    private int root(int x){
-        while(id[x] != x){
-            id[x] = id[id[x]];
-            x = id[x];
+    private int root(int i){
+        while(id[i] != i){
+            id[i] = id[id[i]];
+            i = id[i];
         }
-        return x;
+        return i;
     }
 
-    public void union(int a, int b){
-        int i = root(a);
-        int j = root(b);
+    public void union(int p, int q){
+        int i = root(p);
+        int j = root(q);
         id[i] = j;
-    }
-    public int[] getUnionArray(){
-        return this.id;
     }
 }
